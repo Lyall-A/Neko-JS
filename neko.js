@@ -51,7 +51,7 @@
             { spriteName: "sleeping", duration: 30000, chance: 10 },
             { spriteName: "scratchWallU", duration: 7000, chance: 5, scratchWall: "U" },
             { spriteName: "scratchWallR", duration: 7000, chance: 5, scratchWall: "R" },
-            { spriteName: "scratchWallD", duration: 7000, chance: 5000, scratchWall: "D" },
+            { spriteName: "scratchWallD", duration: 7000, chance: 5, scratchWall: "D" },
             { spriteName: "scratchWallL", duration: 7000, chance: 5, scratchWall: "L" },
         ]
         // All sprites, sprites should be able to have unique a unique width and height however untested
