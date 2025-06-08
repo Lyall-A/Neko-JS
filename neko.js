@@ -40,16 +40,16 @@
         yMax = window.innerHeight; // Highest Y value, should be window height
         xStart = 16 - this.xOffset; // X start position
         yStart = 16 - this.yOffset; // Y start position
-        idleTime = 10000; // Time to wait before entering "idle" mode (allowing for the below animations to play)
+        idleTime = 5000; // Time to wait before entering "idle" mode (allowing for the below animations to play)
         // Animations for "idle" mode with a x% chance of triggering per second
         idleAnimations = [
-            { spriteName: "scratchSelf", duration: 3000, chance: 5 },
-            { spriteName: "tired", duration: 2000, chance: 5 },
-            { spriteName: "sleeping", duration: 30000, chance: 5 },
-            { spriteName: "scratchWallU", duration: 7000, chance: 2.5, scratchWall: "U" },
-            { spriteName: "scratchWallR", duration: 7000, chance: 2.5, scratchWall: "R" },
-            { spriteName: "scratchWallD", duration: 7000, chance: 2.5, scratchWall: "D" },
-            { spriteName: "scratchWallL", duration: 7000, chance: 2.5, scratchWall: "L" },
+            { spriteName: "scratchSelf", duration: 3000, chance: 10 },
+            { spriteName: "tired", duration: 2000, chance: 10 },
+            { spriteName: "sleeping", duration: 30000, chance: 10 },
+            { spriteName: "scratchWallU", duration: 7000, chance: 5, scratchWall: "U" },
+            { spriteName: "scratchWallR", duration: 7000, chance: 5, scratchWall: "R" },
+            { spriteName: "scratchWallD", duration: 7000, chance: 5, scratchWall: "D" },
+            { spriteName: "scratchWallL", duration: 7000, chance: 5, scratchWall: "L" },
         ]
         // All sprites, sprites should be able to have unique a unique width and height however untested
         sprites = {
@@ -317,6 +317,8 @@
                         } else {
                             this.setSprite(randomAnimation.spriteName, 0, randomAnimation.duration);
                         }
+                    } else {
+                        console.log("miss")
                     }
                 }
             }
