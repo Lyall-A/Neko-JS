@@ -255,7 +255,7 @@
                 };
 
                 const distance = Math.sqrt((this.lastCursorMove.x - this.x) ** 2 + (this.lastCursorMove.y - this.y) ** 2);
-                if (distance >= this.minimumCursorDistance) {
+                if (this.currentSprite.name === "sit" && distance >= this.minimumCursorDistance) {
                     // Set alert if outside minimum distance
                     this.setSprite("alert");
                 }
