@@ -28,7 +28,7 @@
         parentElement = null;
 
         spritePath = "./neko.gif"; // Path of neko.gif, can be base64 instead
-        speed = 20; // Speed of neko
+        speed = 30; // Speed of neko
         framesPerSecond = 5; // Animation FPS
         minimumCursorDistance = 32; // Minimum distance from cursor before moving
         cursorWait = 1000; // Time to wait before moving to cursor
