@@ -39,8 +39,8 @@
         spriteHeight = 32; // Default height of each sprite
         xOffset = -this.spriteWidth; // X position offset
         yOffset = -this.spriteHeight; // Y position offset
-        xMax = window.innerWidth; // Highest X value, should be window width
-        yMax = window.innerHeight; // Highest Y value, should be window height
+        xMax = document.documentElement.clientWidth; // Highest X value, should be viewport width
+        yMax = document.documentElement.clientHeight; // Highest Y value, should be viewport height
         xStart = 16 - this.xOffset; // X start position
         yStart = 16 - this.yOffset; // Y start position
         idleTime = 5000; // Time to wait before entering "idle" mode (allowing for the below animations to play)
@@ -49,12 +49,12 @@
             { spriteName: "scratchSelf", duration: 3000, chance: 10 },
             { spriteName: "tired", duration: 2000, chance: 10 },
             { spriteName: "sleeping", duration: 30000, chance: 10 },
-            { spriteName: "scratchWallU", duration: 7000, chance: 5, scratchWall: "U" },
-            { spriteName: "scratchWallR", duration: 7000, chance: 5, scratchWall: "R" },
-            { spriteName: "scratchWallD", duration: 7000, chance: 5, scratchWall: "D" },
-            { spriteName: "scratchWallL", duration: 7000, chance: 5, scratchWall: "L" },
+            { spriteName: "scratchWallU", duration: 7000, chance: 2.5, scratchWall: "U" },
+            { spriteName: "scratchWallR", duration: 7000, chance: 2.5, scratchWall: "R" },
+            { spriteName: "scratchWallD", duration: 7000, chance: 2.5, scratchWall: "D" },
+            { spriteName: "scratchWallL", duration: 7000, chance: 2.5, scratchWall: "L" },
         ]
-        // All sprites, sprites should be able to have unique a unique width and height however untested
+        // All sprites
         sprites = {
             sit: [
                 {
@@ -309,9 +309,13 @@
                     // x% chance every second
                     if (Math.random() * 100 < (randomAnimation.chance / 1000) * frameTime) {
                         if (randomAnimation.scratchWall) {
-                            const xTarget = randomAnimation.scratchWall === "U" || randomAnimation.scratchWall === "D" ? Math.floor(Math.random() * ((this.position === "absolute" ? window.scrollX : 0) + this.xMax - 1)) : randomAnimation.scratchWall === "L" ? 0 : randomAnimation.scratchWall === "R" ? (this.position === "absolute" ? window.scrollX : 0) + this.xMax - (this.currentSprite.sprite.width || this.spriteWidth) : null;
-                            const yTarget = randomAnimation.scratchWall === "L" || randomAnimation.scratchWall === "R" ? Math.floor(Math.random() * ((this.position === "absolute" ? window.scrollY : 0) + this.yMax - 1)) : randomAnimation.scratchWall === "U" ? 0 : randomAnimation.scratchWall === "D" ? (this.position === "absolute" ? window.scrollY : 0) + this.yMax - (this.currentSprite.sprite.height || this.spriteHeight) : null;
-                            this.moveTo(xTarget - this.xOffset, yTarget - this.yOffset);
+                            const xScroll = this.position === "absolute" ? window.scrollX : 0;
+                            const yScroll = this.position === "absolute" ? window.scrollY : 0;
+                            const xTarget = xScroll + (randomAnimation.scratchWall === "U" || randomAnimation.scratchWall === "D" ? Math.floor(Math.random() * (this.xMax - 1)) : randomAnimation.scratchWall === "L" ? 0 - this.xOffset : randomAnimation.scratchWall === "R" ? this.xMax : null);
+                            const yTarget = yScroll + (randomAnimation.scratchWall === "L" || randomAnimation.scratchWall === "R" ? Math.floor(Math.random() * (this.yMax - 1)) : randomAnimation.scratchWall === "U" ? 0 - this.yOffset : randomAnimation.scratchWall === "D" ? this.yMax : null);
+                            
+                            this.moveTo(xTarget, yTarget);
+                            
                             const sitListener = () => {
                                 this.removeEventListener("sit", sitListener);
                                 this.setSprite(randomAnimation.spriteName, 0, randomAnimation.duration);
@@ -320,8 +324,6 @@
                         } else {
                             this.setSprite(randomAnimation.spriteName, 0, randomAnimation.duration);
                         }
-                    } else {
-                        console.log("miss")
                     }
                 }
             }
@@ -351,14 +353,16 @@
                 const xMove = xDirection * (this.speed / 100) * frameTime;
                 const yMove = yDirection * (this.speed / 100) * frameTime;
 
-                // Set running animation
-                this.setSprite(`running${yDirection > 0.5 ? "D" : yDirection < -0.5 ? "U" : ""}${xDirection > 0.5 ? "R" : xDirection < -0.5 ? "L" : ""}`);
-
-                // Move neko
-                this.setPosition(
-                    Math.abs(xDistance) > xMove ? this.x + xMove : this.xTarget,
-                    Math.abs(yDistance) > yMove ? this.y + yMove : this.yTarget
-                );
+                if (distance) {
+                    // Set running animation
+                    this.setSprite(`running${yDirection > 0.5 ? "D" : yDirection < -0.5 ? "U" : ""}${xDirection > 0.5 ? "R" : xDirection < -0.5 ? "L" : ""}`);
+    
+                    // Move neko
+                    this.setPosition(
+                        Math.abs(xDistance) > xMove ? this.x + xMove : this.xTarget,
+                        Math.abs(yDistance) > yMove ? this.y + yMove : this.yTarget
+                    );
+                }
 
                 // Stop running if at target
                 if (this.x === this.xTarget && this.y === this.yTarget) {
@@ -372,7 +376,7 @@
             this.animationFrameId = requestAnimationFrame(this.loop);
         }
 
-        setSprite(spriteName = this.sprites[0], frameIndex, duration) {
+        setSprite(spriteName, frameIndex, duration) {
             const sprite = this.sprites[spriteName];
             const frame = sprite[frameIndex ?? 0];
             const sameSprite = this.currentSprite?.sprite === sprite;
@@ -399,15 +403,15 @@
         }
 
         setPosition(x, y) {
-            this.x = x;
-            this.y = y;
+            this.x = Math.min(this.xMax, Math.max(0, x));
+            this.y = Math.min(this.yMax, Math.max(0, y));
             this.nekoElement.style.left = `${Math.round(this.x + this.xOffset)}px`;
             this.nekoElement.style.top = `${Math.round(this.y + this.yOffset)}px`;
         }
 
         moveTo(x = this.x, y = this.y) {
-            this.xTarget = x;
-            this.yTarget = y;
+            this.xTarget = Math.min(this.xMax, Math.max(0, x));
+            this.yTarget = Math.min(this.yMax, Math.max(0, y));
         }
     }
 
