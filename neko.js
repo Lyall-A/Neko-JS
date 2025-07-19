@@ -3,31 +3,29 @@
         constructor(parentElement, options = {}) {
             super();
 
-            this.parentElement = parentElement;
-
-            this.spritePath = options.spritePath || document.currentScript?.getAttribute("data-sprite-path") || this.spritePath;
-            this.speed = options.speed || parseFloat(document.currentScript?.getAttribute("data-speed")) || this.speed;
-            this.framesPerSecond = options.framesPerSecond || parseInt(document.currentScript?.getAttribute("data-fps")) || this.framesPerSecond;
-            this.position = options.position || document.currentScript?.getAttribute("data-position") || this.position;
+            this.parentElement = parentElement || this.parentElement;
+            this.spritePath = options.spritePath || this.spritePath;
+            this.speed = options.speed || this.speed;
+            this.framesPerSecond = options.framesPerSecond || this.framesPerSecond;
+            this.position = options.position || this.position;
             this.minimumCursorDistance = options.minimumCursorDistance ?? this.minimumCursorDistance;
             this.cursorWait = options.cursorWait ?? this.cursorWait;
-            this.spriteWidth = options.spriteWidth ?? this.spriteWidth;
-            this.spriteHeight = options.spriteHeight ?? this.spriteHeight;
+            this.spriteWidth = options.spriteWidth || this.spriteWidth;
+            this.spriteHeight = options.spriteHeight || this.spriteHeight;
             this.xOffset = options.xOffset ?? this.xOffset;
             this.yOffset = options.yOffset ?? this.yOffset;
-            this.xMax = options.xMax ?? this.xMax;
-            this.yMax = options.yMax ?? this.yMax;
+            this.xMax = options.xMax || this.xMax;
+            this.yMax = options.yMax || this.yMax;
             this.xStart = options.xStart ?? this.xStart;
             this.yStart = options.yStart ?? this.yStart;
             this.idleTime = options.idleTime ?? this.idleTime;
-            this.idleAnimations = options.idleAnimations ?? this.idleAnimations;
-            this.sprites = options.sprites ?? this.sprites;
+            this.idleAnimations = options.idleAnimations || this.idleAnimations;
+            this.sprites = options.sprites || this.sprites;
 
             this.start();
         }
 
-        parentElement = null;
-
+        parentElement = document.body;
         // spritePath = "./neko.gif"; // Path of neko.gif, can be base64 instead
         spritePath = "data:image/gif;base64,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"; // Path of neko.gif, can be base64 instead
         speed = 30; // Speed of neko
@@ -39,8 +37,8 @@
         spriteHeight = 32; // Default height of each sprite
         xOffset = -this.spriteWidth; // X position offset
         yOffset = -this.spriteHeight; // Y position offset
-        xMax = document.documentElement.clientWidth; // Highest X value, should be viewport width
-        yMax = document.documentElement.clientHeight; // Highest Y value, should be viewport height
+        xMax = null; // Highest X value
+        yMax = null; // Highest Y value
         xStart = 16 - this.xOffset; // X start position
         yStart = 16 - this.yOffset; // Y start position
         idleTime = 5000; // Time to wait before entering "idle" mode (allowing for the below animations to play)
@@ -49,10 +47,10 @@
             { spriteName: "scratchSelf", duration: 3000, chance: 10 },
             { spriteName: "tired", duration: 2000, chance: 10 },
             { spriteName: "sleeping", duration: 30000, chance: 10 },
-            { spriteName: "scratchWallU", duration: 7000, chance: 2.5, scratchWall: "U" },
-            { spriteName: "scratchWallR", duration: 7000, chance: 2.5, scratchWall: "R" },
-            { spriteName: "scratchWallD", duration: 7000, chance: 2.5, scratchWall: "D" },
-            { spriteName: "scratchWallL", duration: 7000, chance: 2.5, scratchWall: "L" },
+            { spriteName: "scratchWallU", duration: 7000, chance: 2.5, scratchWall: "U" }, // Works
+            { spriteName: "scratchWallR", duration: 7000, chance: 2.5, scratchWall: "R" }, // Doesn't work
+            { spriteName: "scratchWallD", duration: 7000, chance: 2.5, scratchWall: "D" }, // Doesn't work
+            { spriteName: "scratchWallL", duration: 7000, chance: 2.5, scratchWall: "L" }, // Goes off visible screen
         ]
         // All sprites
         sprites = {
@@ -229,6 +227,8 @@
         y = null;
         xTarget = null;
         yTarget = null;
+        get pageWidth() { return document.documentElement.scrollWidth };
+        get pageHeight() { return document.documentElement.scrollHeight };
 
         start() {
             this.stop();
@@ -311,9 +311,9 @@
                         if (randomAnimation.scratchWall) {
                             const xScroll = this.position === "absolute" ? window.scrollX : 0;
                             const yScroll = this.position === "absolute" ? window.scrollY : 0;
-                            const xTarget = xScroll + (randomAnimation.scratchWall === "U" || randomAnimation.scratchWall === "D" ? Math.floor(Math.random() * (this.xMax - 1)) : randomAnimation.scratchWall === "L" ? 0 - this.xOffset : randomAnimation.scratchWall === "R" ? this.xMax : null);
-                            const yTarget = yScroll + (randomAnimation.scratchWall === "L" || randomAnimation.scratchWall === "R" ? Math.floor(Math.random() * (this.yMax - 1)) : randomAnimation.scratchWall === "U" ? 0 - this.yOffset : randomAnimation.scratchWall === "D" ? this.yMax : null);
-                            
+                            const xTarget = xScroll + (randomAnimation.scratchWall === "U" || randomAnimation.scratchWall === "D" ? Math.floor(Math.random() * (this.xMax ?? this.pageWidth - 1)) : randomAnimation.scratchWall === "L" ? 0 - this.xOffset : randomAnimation.scratchWall === "R" ? this.xMax ?? this.pageWidth : null);
+                            const yTarget = yScroll + (randomAnimation.scratchWall === "L" || randomAnimation.scratchWall === "R" ? Math.floor(Math.random() * (this.yMax ?? this.pageHeight - 1)) : randomAnimation.scratchWall === "U" ? 0 - this.yOffset : randomAnimation.scratchWall === "D" ? this.yMax ?? this.pageHeight : null);
+
                             this.moveTo(xTarget, yTarget);
                             
                             const sitListener = () => {
@@ -403,17 +403,22 @@
         }
 
         setPosition(x, y) {
-            this.x = Math.min(this.xMax, Math.max(0, x));
-            this.y = Math.min(this.yMax, Math.max(0, y));
+            this.x = Math.min(this.xMax ?? this.pageWidth, Math.max(0, x));
+            this.y = Math.min(this.yMax ?? this.pageHeight, Math.max(0, y));
             this.nekoElement.style.left = `${Math.round(this.x + this.xOffset)}px`;
             this.nekoElement.style.top = `${Math.round(this.y + this.yOffset)}px`;
         }
 
         moveTo(x = this.x, y = this.y) {
-            this.xTarget = Math.min(this.xMax, Math.max(0, x));
-            this.yTarget = Math.min(this.yMax, Math.max(0, y));
+            this.xTarget = Math.min(this.xMax ?? this.pageWidth, Math.max(0, x));
+            this.yTarget = Math.min(this.yMax ?? this.pageHeight, Math.max(0, y));
         }
     }
 
-    const neko = new Neko(document.body);
+    const neko = new Neko(document.querySelector(document.currentScript?.getAttribute("data-parent")) || document.body, {
+        spritePath: document.currentScript?.getAttribute("data-sprite-path"),
+        speed: parseFloat(document.currentScript?.getAttribute("data-speed")),
+        framesPerSecond: parseInt(document.currentScript?.getAttribute("data-fps"), 10),
+        position: document.currentScript?.getAttribute("data-position")
+    });
 })();
