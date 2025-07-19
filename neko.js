@@ -237,6 +237,8 @@
 
             this.nekoElement.style.position = this.position === "fixed" ? "fixed" : "absolute";
             this.nekoElement.style.backgroundImage = `url(${this.spritePath})`;
+            this.nekoElement.style.pointerEvents = "none";
+            this.nekoElement.style.zIndex = "99999";
             this.nekoElement.style.imageRendering = "pixelated";
 
             this.parentElement.appendChild(this.nekoElement);
