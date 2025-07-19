@@ -8,21 +8,42 @@
                 border: 2px dashed rgb(0, 255, 34);
                 box-sizing: border-box;
             }
+
             body {
                 background-color: rgb(34, 34, 34);
                 font-family: monospace;
+                text-align: center;
+                color: rgb(245, 245, 245);
             }
-            h1 {
-                color: white;
+
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .content {
                 position: fixed;
                 left: 50%;
                 top: 50%;
                 transform: translate(-50%, -50%);
             }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            code {
+                background-color: rgb(58, 58, 58);
+                padding: 0.5em;
+                border-radius: 0.5em;
+            }
         </style>
     </head>
     <body>
-        <a href="https://github.com/Lyall-A/Neko-JS"><h1>Neko-JS</h1></a>
+        <div class="content">
+            <a href="https://github.com/Lyall-A/Neko-JS"><h1>Neko-JS</h1></a>
+            <pre><code>&lt;script src=&quot;https://cdn.jsdelivr.net/gh/Lyall-A/Neko-JS/neko.js&quot;&gt;&lt;/script&gt;</code></pre>
+        </div>
         <script src="./neko.js"></script>
     </body>
 </html>
